@@ -51,6 +51,7 @@ body,html{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 }
 .category li i{
 	width: 22px;
@@ -119,6 +120,7 @@ body,html{
 .worksList li{
 	width: 264px;
 	height: 275px;
+	cursor: pointer;
 }
 .worksList_shang{
 	width: 100%;
