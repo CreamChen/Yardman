@@ -46,7 +46,7 @@ $(function(){
 		if (window.FileReader) {
 			let num=0;
 			let reader = new FileReader();
-			reader.readAsDataURL(this.files[num]);
+			// reader.readAsDataURL(this.files[num]);
 			/*let fileUrl= new Array();
 			// $.each(fileList,(index,val)=>{
 				reader.readAsDataURL(this.files[num]);
