@@ -320,7 +320,7 @@ body,html{
 	color: #696969;
 	background-color: rgba(0,0,0,.5);
 	display: flex;
-	/*display: none;*/
+	display: none;
 }
 .upload{
 	width: 740px;
@@ -328,22 +328,25 @@ body,html{
 	background-color: #fff;
 	margin: auto;
 	padding: 30px;
+	position: relative;
 }
 .upload>h3{
-	font-size: 16px;
+	font-size: 20px;
 	color: #525252;
 	padding-bottom: 18px;
 }
 .upload>p{
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 16px;
 	color: #525252;
 	padding-bottom: 20px;
+	font-weight: 600;
 }
 .upload>p span{
-	font-size: 10px;
+	font-size: 12px;
 	color: #b8b8b8;
 	margin-left: 28px;
+	font-weight: 500;
 }
 .work_name{
 	width: 100%;
@@ -470,6 +473,8 @@ body,html{
 .select_second_ul{
 	margin-top: 2px;
 	border:1px solid #e1e1e1;
+	max-height: 343px;
+	overflow-y: auto;
 }
 .select_second_ul li{
 	height: 38px;
@@ -490,23 +495,89 @@ body,html{
 	position: relative;
 	padding-top: 20px;
 }
-#upload_images{
+#upload_img h3{
+	font-size: 14px;
+	position: absolute;
+	left: 0;
+	top: -30px;
+}
+#upload_img h3 span{
+	font-size: 12px;
+	color: #b8b8b8;
+	margin-left: 28px;
+	font-weight: 500;
+}
+#upload_img h3 span i{
+	font-style: normal;
+	color: #fa6d39;
+}
+#upload_img .tip{
+	position: absolute;
+	top: 20px;
+	right: 50px;
+}
+#upload_img .tip2{
+	top: 190px;
+}
+#upload_img .box{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+#upload_images,#upload_cover{
 	display: none;
 }
-#ulimg_label{
+#ulimg_label,#cover_label{
 	display: inline-block;
 	width: 124px;
 	height: 124px;
 	line-height: 160px;
 	text-align: center;
 	background: #f4f4f4;
-	margin-left: 14px;
 	border-radius: 6px;
 	font-size: 12px;
 	position: relative;
 	border: 1px solid #f4f4f4;
+	box-sizing: border-box;
 }
-#ulimg_label::after{
+#cover_label{
+	width: 164px;
+	height: 164px;
+	top: 30px;
+	left: 0px;
+	line-height: 194px;
+}
+#cover_label2{
+	display: inline-block;
+	font-size: 12px;
+	position: relative;
+	left: -120px;
+	top: 110px;
+	display: none
+}
+#cover_label2:hover{
+	color: #fa6d39;
+	cursor: pointer;
+}
+.coverimg_box{
+	position: absolute;
+	width: 164px;
+	height: 164px;
+	top: 190px;
+	left: 0px;
+	z-index: 2;
+	background: #e1e1e1;
+	display: none;
+}
+#cover_img{
+	position: absolute;
+	max-width: 164px;
+	max-height: 164px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+#ulimg_label::after,#cover_label::after{
 	content: "";
 	display: inline-block;
 	position: absolute;
@@ -518,7 +589,7 @@ body,html{
 	height: 24px;
 	background: #fa6d39;
 }
-#ulimg_label::before{
+#ulimg_label::before,#cover_label::before{
 	content:"+";
 	position: absolute;
 	left: 50%;
@@ -534,10 +605,84 @@ body,html{
 	font-size: 18px;
 	font-weight: 800;
 }
-#ulimg_label:hover{
+#ulimg_label:hover,#cover_label:hover{
 	transition: background,border 0.3s ;
 	background: #e1e1e1;
 	border-color:#ccc;
+}
+#uploadImg_show{
+	box-sizing: border-box;
+	max-width: 100%;
+	height: 124px;
+	display: inline-block;
+	border-radius: 6px;
+	float: left;
+	display: flex;
+	margin-left: 14px;
+}
+#uploadImg_show li{
+	background: red;
+	width: 126px;
+	margin-right: 20px;
+	border-radius: 6px;
+	overflow: hidden;
+	position: relative;
+	background: #D4D4D4;
+	cursor: pointer;
+}
+#uploadImg_show li:last-child{
+	margin-right: 14px;
+}
+#uploadImg_show li img{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	width: 100%;
+	border-radius: 6px;
+	cursor: pointer;
+}
+#uploadImg_show li span{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: rgba(255,255,255,0.7);
+	border-radius: 50%;
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	text-align: center;
+	line-height: 20px;
+	font-size: 12px;
+	z-index: 1;
+}
+#uploadImg_show li span:hover{
+	background: rgba(255,255,255,1);
+}
+
+.upload .upload_btn{
+	position: absolute;
+	bottom: 25px;
+	left: 30px;
+}
+.upload .upload_btn .btn{
+	display: inline-block;
+	width: 120px;
+	height: 40px;
+	border-radius: 6px;
+	text-align: center;
+	line-height: 40px;
+	font-size: 14px;
+	cursor: pointer;
+}
+#btn_t{
+	background: #fa6d39;
+	color: #fff;
+}
+#btn_f{
+	background: #fff;
+	border:1px solid #b8b8b8;
+	margin-left: 15px;
 }
 
 .colorOrange{
