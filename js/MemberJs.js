@@ -102,8 +102,7 @@ $(function(){
 		let formData=new FormData($('#upload_data')[0]);
 		formData.append('cover',$('#uploadImg_show li img').attr('src'));
 		formData.append('imgSum',uploadImg_li.length);
-		let token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.MQ.zJ7MtMnnBBTiCJBZPU3pvBRoxpXYD5hP5GES-L9IjZ8'
-		formData.append('token',token)
+		formData.append('token',localstorage.getItem('token'))
 		$.each(uploadImg_li,function(i){
 			formData.append('img'+[i],$(this).children('img').attr('src'))
 			// console.log(formData.get('img'+[i]))
@@ -123,10 +122,11 @@ $(function(){
 			method:'post',
 			body:formData
 		}).then(resolve=>resolve.json().then(data=>{
-			alert(data.msg);
-			if (data.code==200) {
-				window.location.reload()
-			}
+			console.log(data)
+			// alert(data.msg);
+			// if (data.code==200) {
+			// 	window.location.reload()
+			// }
 		})).catch(error=>alert('操作错误！'))
 	})
 	//关闭
