@@ -99,14 +99,14 @@ create_leaf();
 
 // 检测登录状态
 let ip = 'http://muma.webgz.cn/';
-let jwt = localStorage.getItem('jwt');
+let token = localStorage.getItem('token');
 let show = false;
 
-if(jwt){
+if(token){
 	$.ajax({
 		url: ip + 'muma/index.php/logged',
 		type: 'POST',
-		data: {jwt: jwt},
+		data: {token: token},
 		dataType: 'jsonp',
 		success: function(data){
 			$('#login_btn').css('backgroundImage', 'url(' + data.face + ')');
