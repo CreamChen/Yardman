@@ -102,7 +102,7 @@ $(function(){
 		let formData=new FormData($('#upload_data')[0]);
 		formData.append('cover',$('#uploadImg_show li img').attr('src'));
 		formData.append('imgSum',uploadImg_li.length);
-		formData.append('token',localstorage.getItem('token'))
+		formData.append('token',localStorage.getItem('token'))
 		$.each(uploadImg_li,function(i){
 			formData.append('img'+[i],$(this).children('img').attr('src'))
 			// console.log(formData.get('img'+[i]))
