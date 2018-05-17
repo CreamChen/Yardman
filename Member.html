@@ -8,10 +8,15 @@
 </head>
 <body>
 	<div id="logo">
-		<a href="index.html"><img src="images/Member/logo.png"></a>
+		<a href="index.html"><img src="images/logo.png"></a>
 	</div>
 	<div id="user">
-		<img src="images/Member/user.png">
+		<a href="login.html" id="login_btn"></a>
+		<ul id="tools">
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
 	</div>
 	<div id="return">
 		<img src="images/Member/icon/return-icon.png">
@@ -24,21 +29,21 @@
 					<div class="user_pic">
 						<img src="images/Member/user.png" id="info_face">
 					</div>
-					<h2 id="info_nickname">WaveG</h2>
-					<p id="info_dir">学生 | 设计</p>
-					<span id="info_motto">越努力越幸运</span>
+					<h2 id="info_nickname"></h2>
+					<p id="info_dir"></p>
+					<span id="info_motto"></span>
 				</div>
 			</div>
 			<div class="sidebar_cen">
 				<p>
 					<i><img src="images/Member/icon/watch-big-icon.png"></i>
 					作品人气
-					<span id="info_popularity">605</span>
+					<span id="info_popularity">0</span>
 				</p>
 				<p>
 					<i><img src="images/Member/icon/like-big-icon.png"></i>
 					获得点赞
-					<span id="info_like">156</span>
+					<span id="info_like">0</span>
 				</p>
 			</div>
 			<div class="sidebar_bot">
@@ -54,27 +59,10 @@
 				<li>全部作品</li>
 			</ul>
 			<div class="listNum">
-				<span id="total">作品 10</span>
+				<span id="total">作品 0</span>
 				<i id="page"><span>0/0</span>页</i>
 			</div>
-			<ul class="list">
-				<!-- <li>
-					<a href="DetailsWork.html">
-						<div class="list_shang">
-							<img src="images/Member/list/production-01.png">
-						</div>
-						<div class="list_zhong">
-							<i><span class="look"></span>52</i>
-							<i><span class="comments"></span>52</i>
-							<i><span class="praise"></span>52</i>
-							<h3>风景插画临摹</h3>
-						</div>
-						<div class="list_xia">
-							<span>APP界面</span>
-						</div>
-					</a>
-				</li> -->
-			</ul>
+			<ul class="list"></ul>
 			<div class="pager">
 				<div class="btn btn_left">
 					<img src="images/Member/icon/left-icon.png">
@@ -88,6 +76,7 @@
 	<!-- 发布任务弹框 ↓ -->
 	<form class="bounced" id="upload_data">
 		<div class="upload">
+			<span id="uploadIngBg"><i>上传中请勿刷新页面...</i></span>
 			<h3>上传作品</h3>
 			<p>作品信息 <span>注：网页作品才可输入网址链接</span></p>
 			<div class="work_name">
@@ -144,4 +133,5 @@
 </body>
 </html>
 <script src="js/jquery.js"></script>
+<script src="js/fetch-jsonp.1.1.3.js"></script>
 <script src="js/MemberJs.js"></script>

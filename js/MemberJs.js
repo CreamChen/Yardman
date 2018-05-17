@@ -1,21 +1,61 @@
-if (localStorage.hasOwnProperty('token')) {
-	$('.release').css('display','inline-block');
-}
 //获取A标签参数
 let url = new URL(window.location.href);
 let uid = url.searchParams.get("uid");
 
-let list_data=new Array();//初始数据
-let select_data=new Array();//上传分类
-let myInfo=new Array();
-let list_li=$('.list');
-let baseUrl='http://10.21.40.246'
+let list_data = new Array();//初始数据
+let select_data = new Array();//上传分类
+let myInfo = new Array();
+let list_li = $('.list');
+let baseUrl = 'http://muma.webgz.cn/php';
+let token = localStorage.getItem('token');
+let show = false;
+
+if(token){
+	fetchJsonp(`${baseUrl}/muma.php/usr/logged?token=${token}`)
+	.then((response) => {
+		response.json().then((data) => {
+			if(data.code == 200){
+				if (uid == data.data.id) {
+					$('.release').css('display','inline-block');
+				}
+				$('#login_btn').css('backgroundImage', `url(${baseUrl}${data.data.face})`);
+				show = true;
+				showMe(data.data.id);
+			}
+		})
+	})
+}
+
+// 登录显示功能
+function showMe(id){
+	$('#login_btn').click(function(e){
+		if(show){
+			e.preventDefault();
+			if(!$('#tools').is(':animated')){
+				$('#tools').fadeToggle(200);
+			}
+		}
+	});
+
+	$('#tools li').on('click', function(){
+		let index = $(this).index();
+		if(index == 0){
+			window.location.href = `Member.html?uid=${id}`;
+		}else if(index == 1){
+			alert('页面还没出来哦-.-');
+		}else if(index == 2){
+			localStorage.removeItem('token');
+			$('#login_btn').trigger('click');
+			$('#login_btn').css('backgroundImage', '');
+			show = false;
+		}
+	});
+}
 //获取个人信息
-fetch(`${baseUrl}/muma.php/pfl/info?uid=${uid}`)
+fetchJsonp(`${baseUrl}/muma.php/pfl/info?uid=${uid}`)
 .then(resolve=>resolve.json()
 	.then(data=>{
 		myInfo=data;
-		// console.log(myInfo)
 		$('#info_face').attr('src',baseUrl+myInfo.data.face);
 		$('#info_nickname').text(myInfo.data.nickname);
 		$('#info_dir').text(`${myInfo.data.profession} | ${myInfo.data.direction}`);
@@ -33,7 +73,7 @@ fetch(`${baseUrl}/muma.php/pfl/info?uid=${uid}`)
 //获取个人作品
 function getListData(page){
 	getListData.arguments.length>0?page=page:page=sessionStorage.getItem('Member_pageNum')||""
-	fetch(`${baseUrl}/muma.php/pfl/me?uid=${uid}&page=${page}`)
+	fetchJsonp(`${baseUrl}/muma.php/pfl/me?uid=${uid}&page=${page}`)
 		.then(resolve=>resolve.json()
 			.then(data=>{
 				list_data=data;
@@ -91,7 +131,7 @@ $('.pager>.btn_left').on('click',function(){
 		$('.bounced').css('display','flex');
 		//获取上传模块分类
 		let select_li=$('.select_ul li');
-		fetch(`${baseUrl}/muma.php/cat`)
+		fetchJsonp(`${baseUrl}/muma.php/cat`)
 			.then(resolve=>resolve.json()
 				.then(data=>{
 					select_data = data;
@@ -131,7 +171,6 @@ $('.pager>.btn_left').on('click',function(){
 		$('.select span').trigger('click').text($('#select_hidden').val())
 		$('#cid').val($('.select_ul li').eq(select_li_check).attr('cid'));//一级菜单cid
 		$('#cat').val($(this).attr('cat'));//二级菜单cat
-		// console.log($('#cid').val())
 		$('#cid').val()==2?$('#work_url').attr('disabled','disabled'):$('#work_url').removeAttr('disabled')
 	})	
 
@@ -172,6 +211,7 @@ $('#upload_cover').on('change',function(){
 
 //上传事件
 $('#btn_t').on('click',function(){
+	$('#uploadIngBg').css('display','inline-block');
 	let fileUrl=new Array();//上传图片路径数组
 	let uploadImg_li=$('#uploadImg_show li');
 	let formData=new FormData($('#upload_data')[0]);
@@ -185,9 +225,9 @@ $('#btn_t').on('click',function(){
 		method:'post',
 		body:formData
 	}).then(resolve=>resolve.json().then(data=>{
-		// console.log(data)
+		$('#uploadIngBg').css('display','none');
 		alert(data.msg)
-	})).catch(error=>alert('操作错误！'))
+	})).catch(error=>{alert('操作错误！');$('#uploadIngBg').css('display','none');})
 })
 //关闭
 $('#btn_f').on('click',function(){

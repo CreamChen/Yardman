@@ -1,24 +1,24 @@
 // 检测登录状态
-let ip = 'http://10.21.40.246/muma.php';
-let imgIP = 'http://10.21.40.246';
+let ip = 'http://muma.webgz.cn/php/muma.php';
+let imgIP = 'http://muma.webgz.cn/php';
 let token = localStorage.getItem('token');
 let show = false;
 
 if(token){
-	fetch(`${ip}/usr/logged?token=${token}`)
+	fetchJsonp(`${ip}/usr/logged?token=${token}`)
 	.then((response) => {
 		response.json().then((data) => {
 			if(data.code == 200){
 				$('#login_btn').css('backgroundImage', `url(${imgIP}${data.data.face})`);
 				show = true;
-				showMe();
+				showMe(data.data.id);
 			}
 		})
 	})
 }
 
 // 登录显示功能
-function showMe(){
+function showMe(id){
 	$('#login_btn').click(function(e){
 		if(show){
 			e.preventDefault();
@@ -31,9 +31,9 @@ function showMe(){
 	$('#tools li').on('click', function(){
 		let index = $(this).index();
 		if(index == 0){
-			window.location.href = 'me.html';
+			window.location.href = `Member.html?uid=${id}`;
 		}else if(index == 1){
-			window.location.href = 'task.html';
+			alert('页面还没出来哦-.-');
 		}else if(index == 2){
 			localStorage.removeItem('token');
 			$('#login_btn').trigger('click');
@@ -45,7 +45,7 @@ function showMe(){
 
 // fetch请求
 function res(url){
-	fetch(url)
+	fetchJsonp(url)
 	.then((response) => {
 		response.json().then((data) => {
 			item(data, url);

@@ -1,11 +1,54 @@
 //获取初始数据
 let url = new URL(window.location.href);
 let id = url.searchParams.get("id");
-let baseUrl = 'http://10.21.40.246';
-if (sessionStorage.getItem('watchList')==""||sessionStorage.getItem('watchList')==null) {
-	sessionStorage.removeItem('watchList')
+let baseUrl = 'http://muma.webgz.cn/php';
+// 检测登录状态
+let token = localStorage.getItem('token');
+let show = false;
+
+if(token){
+	fetchJsonp(`${baseUrl}/muma.php/usr/logged?token=${token}`)
+	.then((response) => {
+		response.json().then((data) => {
+			if(data.code == 200){
+				$('#login_btn').css('backgroundImage', `url(${baseUrl}${data.data.face})`);
+				show = true;
+				showMe(data.data.id);
+			}
+		})
+	})
 }
-let watchList = JSON.parse(sessionStorage.getItem('watchList'))||[0]
+
+// 登录显示功能
+function showMe(id){
+	$('#login_btn').click(function(e){
+		if(show){
+			e.preventDefault();
+			if(!$('#tools').is(':animated')){
+				$('#tools').fadeToggle(200);
+			}
+		}
+	});
+
+	$('#tools li').on('click', function(){
+		let index = $(this).index();
+		if(index == 0){
+			window.location.href = `Member.html?uid=${id}`;
+		}else if(index == 1){
+			alert('页面还没出来哦-.-');
+		}else if(index == 2){
+			localStorage.removeItem('token');
+			$('#login_btn').trigger('click');
+			$('#login_btn').css('backgroundImage', '');
+			show = false;
+		}
+	});
+}
+
+if (sessionStorage.getItem('Ym_watchList')==""||sessionStorage.getItem('Ym_watchList')==null) {
+	sessionStorage.removeItem('Ym_watchList')
+}
+let watchList = JSON.parse(sessionStorage.getItem('Ym_watchList'))||[0]
 let isAdd = 1;
 $.each(watchList,(ind,val)=>{
 	if(id==val){
@@ -15,11 +58,10 @@ $.each(watchList,(ind,val)=>{
 })
 let info = new Array();
 //获取个人信息
-fetch(`${baseUrl}/muma.php/pfl/dtl?id=${id}&isAdd=${isAdd}`)
+fetchJsonp(`${baseUrl}/muma.php/pfl/dtl?id=${id}&isAdd=${isAdd}`)
 	.then(resolve=>resolve.json()
 		.then(data=>{
 			info=data;
-			console.log(info)	
 			$('#info_title').text(info.data.title)
 			$('#info_name').text(info.data.name)
 			$('#info_time').text(info.data.create_time)
@@ -32,7 +74,7 @@ fetch(`${baseUrl}/muma.php/pfl/dtl?id=${id}&isAdd=${isAdd}`)
 			$('#info_dir').text(`${info.data.profession} | ${info.data.direction}`);
 			if (isAdd==1) {
 				watchList.push(id)
-				sessionStorage.setItem('watchList',JSON.stringify(watchList))
+				sessionStorage.setItem('Ym_watchList',JSON.stringify(watchList))
 			}
 			info.data.url==""?$('#info_url').css('display','none'):$('#info_url').attr('href',info.data.url)
 			let info_images = $('#info_images');
@@ -50,10 +92,9 @@ let comments_page;
 getcomments_data();
 function getcomments_data(page){
 	page=page||1
-	fetch(`${baseUrl}/muma.php/cmt/list?pid=${id}&page=${page}`)
+	fetchJsonp(`${baseUrl}/muma.php/cmt/list?pid=${id}&page=${page}`)
 		.then(resolve=>resolve.json()
 			.then(data=>{
-				// console.log(data)
 				comments_page=data.data.current_page
 				let loading=$('.comments_list')
 				if (page==1) {$('.comments_list').html('');}
@@ -86,7 +127,6 @@ function getcomments_data(page){
 }
 $('.loading').on('click',function(){
 		comments_page++;
-		// console.log(comments_data.current_page)
 		getcomments_data(comments_page);
 })
 
@@ -117,7 +157,7 @@ $('#comment_btn').on('click',function(){
 if (localStorage.getItem('Ym_likeList')==""||localStorage.getItem('Ym_likeList')==null) {
 	localStorage.removeItem('Ym_likeList')
 }
-let likeList = JSON.parse(sessionStorage.getItem('likeList'))||[0]
+let likeList = JSON.parse(localStorage.getItem('Ym_likeList'))||[0]
 let isLike = 1;
 $.each(likeList,function(ind,val){
 	if (id==val) {
@@ -131,21 +171,19 @@ if (isLike==1) {
 	$('.about_userLike').css({'border':'1px solid #dbdbdb','background':'#fff','color':'#999'}).html('<p><span></span>取消喜欢</p>')
 }
 $('.about_userLike').on('click',function(){
-	console.log(isLike)
-	fetch(`${baseUrl}/muma.php/like?pid=${id}&isLike=${isLike}`)
+	fetchJsonp(`${baseUrl}/muma.php/like?pid=${id}&isLike=${isLike}`)
 		.then(resolve=>resolve.json()
 			.then(data=>{
-				console.log(data)
 				$('#info_like').text(data.data.isLike)
 				if (isLike==1) {
 					likeList.push(id)
-					localStorage.setItem('likeList',JSON.stringify(likeList));
-					likeList = JSON.parse(localStorage.getItem('likeList'));
+					localStorage.setItem('Ym_likeList',JSON.stringify(likeList));
+					likeList = JSON.parse(localStorage.getItem('Ym_likeList'));
 					isLike=2;
 					$('.about_userLike').css({'border':'1px solid #dbdbdb','background':'#fff','color':'#999'}).html('<p><span></span>取消喜欢</p>')
 				}else{
 					likeList.splice($.inArray(id,likeList),1);
-					localStorage.setItem('likeList',JSON.stringify(likeList));
+					localStorage.setItem('Ym_likeList',JSON.stringify(likeList));
 					isLike=1;
 					$('.about_userLike').css({'border':'none','background':'#fa6d39','color':'#fff'}).html('<p><span></span>欣赏作品</p>')
 				}
